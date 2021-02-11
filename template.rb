@@ -38,7 +38,7 @@ def rails_6?
 end
 
 def add_gems
-  gem 'administrate', github: "excid3/administrate", branch: 'jumpstart'
+  gem 'madmin', github: 'excid3/madmin'
   gem 'bootstrap', '~> 4.5'
   gem 'devise', '~> 4.7', '>= 4.7.1'
   gem 'devise-bootstrapped', github: 'excid3/devise-bootstrapped', branch: 'bootstrap4'
@@ -53,14 +53,22 @@ def add_gems
   gem 'omniauth-github', '~> 1.4'
   gem 'omniauth-twitter', '~> 1.4'
   gem 'pundit', '~> 2.1'
-  gem 'redis', '~> 4.2', '>= 4.2.2'
+  # Hotwire installs Redis
+  #gem 'redis', '~> 4.2', '>= 4.2.2'
   gem 'sidekiq', '~> 6.0', '>= 6.0.3'
   gem 'sitemap_generator', '~> 6.1', '>= 6.1.2'
   gem 'whenever', require: false
+  gem 'hotwire-rails'
+  gem 'vite_rails'
 
   if rails_5?
     gsub_file "Gemfile", /gem 'sqlite3'/, "gem 'sqlite3', '~> 1.3.0'"
-    gem 'webpacker', '~> 5.1', '>= 5.1.1'
+  else
+    # Remove Webpacker
+    gsub_file "Gemfile", /^gem\s+["']webpacker["'].*$/,''
+    def self.webpack_install?
+      false
+    end
   end
 end
 
@@ -115,37 +123,19 @@ def add_authorization
   generate 'pundit:install'
 end
 
-def add_webpack
-  # Rails 6+ comes with webpacker by default, so we can skip this step
-  return if rails_6?
-
-  # Our application layout already includes the javascript_pack_tag,
-  # so we don't need to inject it
-  rails_command 'webpacker:install'
+def add_vite
+  run 'bundle exec vite install'
 end
 
 def add_javascript
-  run "yarn add expose-loader jquery popper.js bootstrap data-confirm-modal local-time"
-
+  run "yarn add expose-loader jquery popper.js bootstrap data-confirm-modal local-time @hotwired/turbo-rails trix @rails/actiontext sass @popperjs/core font-awesome stimulus"
   if rails_5?
-    run "yarn add turbolinks @rails/actioncable@pre @rails/actiontext@pre @rails/activestorage@pre @rails/ujs@pre"
+    run "yarn add @rails/actioncable@pre @rails/actiontext@pre @rails/activestorage@pre @rails/ujs@pre"
   end
+end
 
-  content = <<-JS
-const webpack = require('webpack')
-environment.plugins.append('Provide', new webpack.ProvidePlugin({
-  $: 'jquery',
-  jQuery: 'jquery',
-  Rails: '@rails/ujs'
-}))
-  JS
-
-  insert_into_file 'config/webpack/environment.js', content + "\n", before: "module.exports = environment"
-
-  append_to_file "app/assets/config/manifest.js", <<-RUBY
-//= link administrate/application.css
-//= link administrate/application.js
-  RUBY
+def add_hotwire
+  rails_command "hotwire:install"
 end
 
 def copy_templates
@@ -272,15 +262,16 @@ after_bundle do
   stop_spring
   add_users
   add_authorization
-  add_webpack
   add_javascript
   add_announcements
   add_notifications
   add_multiple_authentication
   add_sidekiq
   add_friendly_id
+  add_hotwire
 
   copy_templates
+  add_vite
   add_whenever
   add_sitemap
 
@@ -307,7 +298,7 @@ after_bundle do
   say "  # Update config/database.yml with your database credentials"
   say
   say "  rails db:create && rails db:migrate"
-  say "  rails g administrate:install # Generate admin dashboards"
+  say "  rails g madmin:install # Generate admin dashboards"
   say "  gem install foreman"
-  say "  foreman start # Run Rails, sidekiq, and webpack-dev-server"
+  say "  foreman start # Run Rails, sidekiq, and vite"
 end
