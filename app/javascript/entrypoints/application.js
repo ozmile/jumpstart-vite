@@ -6,4 +6,6 @@ console.log('Vite ⚡️ Ruby')
 import '~/stylesheets/application.scss'
 import '~/globals.js'
 import '~/setup.js'
-import '~/bootstrap.js'
+
+// Delay bootstrap, to ensure jQuery is already defined globally by then.
+import('~/bootstrap.js')
