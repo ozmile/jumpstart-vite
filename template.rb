@@ -13,11 +13,11 @@ def add_template_repository_to_source_path
     at_exit { FileUtils.remove_entry(tempdir) }
     git clone: [
       "--quiet",
-      "https://github.com/excid3/jumpstart.git",
+      "https://github.com/ElMassimo/jumpstart-vite.git",
       tempdir
     ].map(&:shellescape).join(" ")
 
-    if (branch = __FILE__[%r{jumpstart/(.+)/template.rb}, 1])
+    if (branch = __FILE__[%r{jumpstart-vite/(.+)/template.rb}, 1])
       Dir.chdir(tempdir) { git checkout: branch }
     end
   else
@@ -43,7 +43,6 @@ def add_gems
   gem 'devise', '~> 4.7', '>= 4.7.1'
   gem 'devise-bootstrapped', github: 'excid3/devise-bootstrapped', branch: 'bootstrap4'
   gem 'devise_masquerade', '~> 1.2'
-  gem 'font-awesome-sass', '~> 5.13'
   gem 'friendly_id', '~> 5.3'
   gem 'image_processing'
   gem 'mini_magick', '~> 4.10', '>= 4.10.1'
@@ -60,6 +59,9 @@ def add_gems
   gem 'whenever', require: false
   gem 'hotwire-rails'
   gem 'vite_rails'
+
+  # Remove sass-rails
+  gsub_file "Gemfile", /^gem\s+["']sass-rails["'].*$/,''
 
   if rails_5?
     gsub_file "Gemfile", /gem 'sqlite3'/, "gem 'sqlite3', '~> 1.3.0'"
@@ -140,6 +142,7 @@ end
 
 def copy_templates
   remove_file "app/assets/stylesheets/application.css"
+  remove_file "app/javascript/packs/application.js" # Webpack
 
   copy_file "Procfile"
   copy_file "Procfile.dev"

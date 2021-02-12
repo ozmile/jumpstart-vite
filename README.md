@@ -9,8 +9,6 @@
   with
   <a href="https://vite-ruby.netlify.app/">Vite</a>
 
-  <br>
-
   <p align="center">
     <a href="https://github.com/ElMassimo/vite_ruby/blob/master/LICENSE.txt">
       <img alt="License" src="https://img.shields.io/badge/license-MIT-428F7E.svg"/>
@@ -47,7 +45,15 @@ rails new myapp -d postgresql -m https://raw.githubusercontent.com/ElMassimo/jum
 
 For the rest of the instructions, head to [Jumpstart Rails][jumpstart].
 
+<br/>
+
 ## Video Comparison 🎥
+
+Webpacker on the left, Vite on the right. I run `foreman start`, wait until the page loads, then kill the process and run it a second time.
+
+<a href="https://user-images.githubusercontent.com/1158253/107697132-98876580-6c91-11eb-9bda-567b1b9f6cf5.mp4" target="_blank" rel="noreferrer">
+  <img width="832" alt="Screen Shot 2021-02-12 at 10 03 51" src="https://user-images.githubusercontent.com/1158253/107771581-b7c9d580-6d19-11eb-9184-48f97b47f2cf.png">
+</a>
 
 ### Webpacker
 
@@ -64,7 +70,6 @@ Once it's installed, and we have run `bin/rake db:create db:migrate`, we'll star
 
 Cold start is particularly slow, and it locks Rails rendering.
 
-<br/>
 <br/>
 
 ### Vite ⚡️
@@ -95,6 +100,8 @@ continue be __updated instantly__.
 
 In production, Vite [bundles your code][bundling] with tree-shaking, lazy-loading,
 and common chunk splitting out of the box, to achieve optimal loading performance.
+
+<br/>
 
 ## Special Thanks 🙌
 
