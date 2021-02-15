@@ -127,10 +127,12 @@ end
 
 def add_vite
   run 'bundle exec vite install'
+  inject_into_file('vite.config.ts', "import StimulusHMR from 'vite-plugin-stimulus-hmr'\n", after: %(from 'vite'\n))
+  inject_into_file('vite.config.ts', "\n    StimulusHMR(),", after: 'plugins: [')
 end
 
 def add_javascript
-  run "yarn add expose-loader jquery popper.js bootstrap data-confirm-modal local-time @hotwired/turbo-rails trix @rails/actiontext sass @popperjs/core font-awesome stimulus stimulus-vite-helpers"
+  run "yarn add expose-loader jquery popper.js bootstrap data-confirm-modal local-time @hotwired/turbo-rails trix @rails/actiontext sass @popperjs/core font-awesome stimulus stimulus-vite-helpers vite-plugin-stimulus-hmr"
   if rails_5?
     run "yarn add @rails/actioncable@pre @rails/actiontext@pre @rails/activestorage@pre @rails/ujs@pre"
   end
