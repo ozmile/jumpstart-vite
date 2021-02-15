@@ -37,6 +37,16 @@ basic setup to include a working Stimulus example and Hotwire integration.
 - 🚀 Stimulus + Turbo Hotwire
 - [And more!][jumpstart]
 
+## Demo 🎥
+
+Changes to Stimulus controllers don't require a full page refresh.
+
+<a href="https://user-images.githubusercontent.com/1158253/107971586-6deb2480-6f91-11eb-8919-100ca36f3683.mp4" rel="noreferrer" target="_blank">
+  <img width="836" alt="Screen Shot 2021-02-15 at 13 27 22" src="https://user-images.githubusercontent.com/1158253/107971695-8e1ae380-6f91-11eb-9ef7-9fed47d4d3be.png">
+</a>
+
+This feature is powered by <kbd>[vite-plugin-stimulus-hmr](https://github.com/ElMassimo/vite-plugin-stimulus-hmr)</kbd>.
+
 ## Installation 💿
 
 ```bash
