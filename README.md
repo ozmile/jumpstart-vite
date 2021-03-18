@@ -23,6 +23,9 @@
 [significantly faster]: https://github.com/evanw/esbuild#why
 [no bundling]: https://vitejs.dev/guide/introduction.html#the-problem
 [bundling]: https://vitejs.dev/guide/introduction.html#why-bundle-for-production
+[JS From Routes]: https://github.com/ElMassimo/js_from_routes
+[vite-plugin-stimulus-hmr]: https://github.com/ElMassimo/vite-plugin-stimulus-hmr
+[vite-plugin-full-reload]: https://github.com/ElMassimo/vite-plugin-full-reload
 
 This repo is a fork of the [__Jumpstart Rails__][jumpstart] template, which is
 like Laravel Spark, for Rails.
@@ -35,7 +38,13 @@ basic setup to include a working Stimulus example and Hotwire integration.
 - 💡 Instant server start
 - ⚡️ Blazing fast hot reload
 - 🚀 Stimulus + Turbo Hotwire
+- 🛤 Path and API Helpers: [JS From Routes]
 - [And more!][jumpstart]
+
+It adds <kbd>[vite-plugin-stimulus-hmr]</kbd> for instant feedback on changes to
+your Stimulus controllers, <kbd>[vite-plugin-full-reload]</kbd> to automatically
+refresh the page when editing the Rails layout or templates, and __[JS From Routes]__
+to automatically generate path and API helpers from the routes.
 
 ## Demo 🎥
 

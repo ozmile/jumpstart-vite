@@ -59,6 +59,7 @@ def add_gems
   gem 'whenever', require: false
   gem 'hotwire-rails'
   gem 'vite_rails'
+  gem 'js_from_routes', group: :development
 
   # Remove sass-rails
   gsub_file "Gemfile", /^gem\s+["']sass-rails["'].*$/,''
@@ -127,12 +128,14 @@ end
 
 def add_vite
   run 'bundle exec vite install'
+  inject_into_file('vite.config.ts', "import FullReload from 'vite-plugin-full-reload'\n", after: %(from 'vite'\n))
   inject_into_file('vite.config.ts', "import StimulusHMR from 'vite-plugin-stimulus-hmr'\n", after: %(from 'vite'\n))
+  inject_into_file('vite.config.ts', "\n    FullReload(['config/routes.rb', 'app/views/**/*']),", after: 'plugins: [')
   inject_into_file('vite.config.ts', "\n    StimulusHMR(),", after: 'plugins: [')
 end
 
 def add_javascript
-  run "yarn add expose-loader jquery popper.js bootstrap data-confirm-modal local-time @hotwired/turbo-rails trix @rails/actiontext sass @popperjs/core font-awesome stimulus stimulus-vite-helpers vite-plugin-stimulus-hmr"
+  run "yarn add expose-loader jquery popper.js bootstrap data-confirm-modal local-time @hotwired/turbo-rails trix @rails/actiontext sass @popperjs/core font-awesome stimulus stimulus-vite-helpers vite-plugin-stimulus-hmr vite-plugin-full-reload typescript @js-from-routes/client"
   if rails_5?
     run "yarn add @rails/actioncable@pre @rails/actiontext@pre @rails/activestorage@pre @rails/ujs@pre"
   end
@@ -148,6 +151,7 @@ def copy_templates
 
   copy_file "Procfile"
   copy_file "Procfile.dev"
+  copy_file "tsconfig.json"
   copy_file ".foreman"
 
   directory "app", force: true
@@ -175,12 +179,12 @@ end
 
 def add_announcements
   generate "model Announcement published_at:datetime announcement_type name description:text"
-  route "resources :announcements, only: [:index]"
+  route "resources :announcements, only: [:index], export: true"
 end
 
 def add_notifications
   generate "noticed:model"
-  route "resources :notifications, only: [:index]"
+  route "resources :notifications, only: [:index], export: true"
 end
 
 def add_administrate
@@ -281,6 +285,7 @@ after_bundle do
   add_sitemap
 
   rails_command "active_storage:install"
+  rails_command "js_from_routes:generate"
 
   # Commit everything to git
   unless ENV["SKIP_GIT"]

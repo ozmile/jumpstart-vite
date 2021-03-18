@@ -9,3 +9,7 @@ import '~/setup.js'
 
 // Delay bootstrap, to ensure jQuery is already defined globally by then.
 import('~/bootstrap.js')
+
+// Example: Using JS From Routes
+import { announcements } from '~/api'
+console.log('JS From Routes', { announcements: announcements.list.path() })
