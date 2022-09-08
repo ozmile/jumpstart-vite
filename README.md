@@ -21,8 +21,8 @@
 [vite_rails]: https://github.com/ElMassimo/vite_rails/tree/main/vite_rails
 [esbuild]: https://github.com/evanw/esbuild
 [significantly faster]: https://github.com/evanw/esbuild#why
-[no bundling]: https://vitejs.dev/guide/introduction.html#the-problem
-[bundling]: https://vitejs.dev/guide/introduction.html#why-bundle-for-production
+[no bundling]: https://vitejs.dev/guide/why.html#the-problems
+[bundling]: https://vitejs.dev/guide/why.html#why-bundle-for-production
 [JS From Routes]: https://github.com/ElMassimo/js_from_routes
 [vite-plugin-stimulus-hmr]: https://github.com/ElMassimo/vite-plugin-stimulus-hmr
 [vite-plugin-full-reload]: https://github.com/ElMassimo/vite-plugin-full-reload
